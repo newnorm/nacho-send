@@ -1,0 +1,23 @@
+{
+  "name": "nacho-send",
+  "version": "1.0.0",
+  "description": "Real-time chat room for short time conversations",
+  "main": "ch01_test0.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/newnorm/nacho-send.git"
+  },
+  "author": "newnorm",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/newnorm/nacho-send/issues"
+  },
+  "homepage": "https://github.com/newnorm/nacho-send#readme",
+  "dependencies": {
+    "nconf": "^0.10.0",
+    "prettier": "^2.1.2"
+  }
+}

@@ -23,11 +23,11 @@ let server = http.createServer(app).listen(app.get("port"), function () {
   console.log("server starting at port " + app.get("port"));
 });
 
-let io = socketio.listen(server);
-
-io.sockets.on("connection", function (socket) {
-  console.log("connection info ", socket.request.connection._peername);
-  socket.remoteAddress = socket.request.connection._peername.address;
-  socket.remotePort = socekt.request.connection._peername.port;
-});
+let io = socketio.listen(server, { origins: "*:*" });
+//
+// io.sockets.on("connection", function (socket) {
+//   console.log("connection info ", socket.request.connection._peername);
+//   socket.remoteAddress = socket.request.connection._peername.address;
+//   socket.remotePort = socekt.request.connection._peername.port;
+// });
 console.log("prepared to handle requests from socket io :)");

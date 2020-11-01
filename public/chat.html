@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>채팅 클라이언트</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"
+      integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ=="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      let host;
+      let port;
+      let socket;
+
+      function println(data) {
+        console.log(data);
+        $("#result").append(`<p>data</p>`);
+      }
+
+      $(function () {
+        $("#connectButton").bind("click", function (event) {
+          println("연결 활성화 중...");
+          host = $("#hostInput").val();
+          port = $("#portInput").val();
+          connectToServer();
+        });
+      });
+
+      function connectToServer() {
+        let options = { 'forceNew': true };
+        let url = `http://${host}:${port}`;
+
+        socket = io.connect(url, options);
+        socket.on("connect", function () {
+          println("웹 소켓 서버에 연결되었습니다. : " + url);
+        });
+        socket.on("disconnect", function () {
+          println("웹 소켓 연결이 종료되었습니다.");
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <h3>채팅 클라이언트</h3>
+    <br />
+    <div>
+      <input type="text" id="hostInput" value="localhost" />
+      <input type="text" id="portInput" value="3000" />
+      <input type="button" id="connectButton" value="connect" />
+    </div>
+    <hr />
+    <p>결과 :</p>
+    <div id="result"></div>
+  </body>
+</html>

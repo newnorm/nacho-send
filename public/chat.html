@@ -21,7 +21,7 @@
 
       function println(data) {
         console.log(data);
-        $("#result").append(`<p>data</p>`);
+        $("#result").append(`<p>${data}</p>`);
       }
 
       $(function () {
@@ -33,16 +33,28 @@
         });
       });
 
+      function printChat(data) {
+        console.log(data);
+        $("#chatContents").append(`<p>${data}</p>`);
+      }
+
+      $(function () {
+        $("#sendButton").bind("click", function (event) {
+          let chatContents = $("#chatInput").val();
+          printChat(chatContents);
+        });
+      });
+
       function connectToServer() {
-        let options = { 'forceNew': true };
+        let options = { forceNew: true };
         let url = `http://${host}:${port}`;
 
         socket = io.connect(url, options);
         socket.on("connect", function () {
-          println("웹 소켓 서버에 연결되었습니다. : " + url);
+          println(url + " 에 입장하였습니다.");
         });
         socket.on("disconnect", function () {
-          println("웹 소켓 연결이 종료되었습니다.");
+          println("연결이 종료되었습니다.");
         });
       }
     </script>
@@ -53,10 +65,15 @@
     <div>
       <input type="text" id="hostInput" value="localhost" />
       <input type="text" id="portInput" value="3000" />
-      <input type="button" id="connectButton" value="connect" />
+      <input type="button" id="connectButton" value="입장하기" />
     </div>
     <hr />
-    <p>결과 :</p>
     <div id="result"></div>
+    <div>
+      <input type="text" id="chatInput" />
+      <input type="button" id="sendButton" value="보내기" />
+    </div>
+    <hr />
+    <div id="chatContents"></div>
   </body>
 </html>

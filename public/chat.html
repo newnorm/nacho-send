@@ -70,10 +70,41 @@
     <hr />
     <div id="result"></div>
     <div>
-      <input type="text" id="chatInput" />
+      <input type="text" id="chatInput"
+             onFocus="onFocus()"
+             onBlur="onBlur()"
+      />
       <input type="button" id="sendButton" value="보내기" />
     </div>
     <hr />
     <div id="chatContents"></div>
   </body>
 </html>
+
+<script>
+  function onFocus() {
+    socket.emit('begin_typing');
+  }
+  function onBlur() {
+    socket.emit('end_typing');
+  }
+
+  function onSend(message) {
+    socket.emit('message', { message });
+    // ui XX
+  }
+
+  socket.on('message', () => {
+    // ui
+  });
+  socket.on('begin_typing', (id) => {
+    if (id === myId) return;
+
+    // ui
+  });
+  socket.on('end_typing', (id) => {
+    if (id === myId) return;
+
+    //
+  });
+</script>

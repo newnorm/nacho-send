@@ -24,6 +24,26 @@ let server = http.createServer(app).listen(app.get("port"), function () {
 });
 
 let io = socketio.listen(server, { origins: "*:*" });
+
+const clients = [];
+
+const broadcast = (type, params) => {
+  for (const c of clients)
+    c.emit(type, params);
+}
+
+io.sockets.on("connection", (socket) => {
+  clients.push(socket);
+});
+io.on('begin_typing', (socket) => {
+  broadcast('begin_typing', { id: socket.id });
+});
+io.on('end_typing', (socket) => {
+  broadcast('end_typing', { id: socket.id });
+});
+io.on('message', (socket) => {
+  broadcast('message', { id: socket.id, message });
+});
 //
 // io.sockets.on("connection", function (socket) {
 //   console.log("connection info ", socket.request.connection._peername);

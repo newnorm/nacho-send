@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 import { Home, About, Chat } from '../pages'
-import useScript from '../hooks/useScript'
 
 function App(props) {
   return (

@@ -39,14 +39,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const StyledFont = styled.p`
-  font-family: sans-serif;
-`
-
 const Layout = styled.div`
   padding-top: 100px;
   margin: 0 auto;
-  width: 80%;
+  width: 50%;
+`
+
+const InputWrapper = styled.p`
+  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 `
 
 const Chat = (props) => {
@@ -67,42 +70,45 @@ const Chat = (props) => {
     <Layout>
       <h1 style={{ color: '#92cd28' }}>Nacho Chat</h1>
       {/*<StyledFont>chat room</StyledFont>*/}
-      {/*TODO: roboto 폰트 적용*/}
-      <CssTextField
-        id="custom-css-standard-input"
-        label={`${typer} 's saying...`}
-        style={{ width: 500, marginRight: 10, marginBottom: 20 }}
-        placeholder={'입력해주세요...'}
-        value={typing}
-        onChange={(event) => {
-          setTyping(event.target.value)
-        }}
-        onKeyDown={(event) => {
-          if (event.key === 'Enter' && typing) {
-            setContents(
-              produce(contents, (draft) => {
-                draft.push(typing)
-              })
-            )
-          }
-        }}
-      />
+      <InputWrapper>
+        <CssTextField
+          id="custom-css-standard-input"
+          label={`${typer} 's saying...`}
+          style={{ width: 800, marginRight: 10, marginBottom: 20 }}
+          placeholder={'입력해주세요...'}
+          value={typing}
+          onChange={(event) => {
+            setTyping(event.target.value)
+          }}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' && typing) {
+              setContents(
+                produce(contents, (draft) => {
+                  draft.push(typing)
+                })
+              )
+            }
+          }}
+        />
 
-      <Button
-        variant="contained"
-        style={{ backgroundColor: '#e4ff7f' }}
-        onClick={() => {
-          // setContents(contentsArray)
-          // contentsArray.push(typing)
-          setContents(
-            produce(contents, (draft) => {
-              draft.push(typing)
-            })
-          )
-        }}
-      >
-        submit
-      </Button>
+        <Button
+          variant="contained"
+          style={{ backgroundColor: '#e4ff7f', height: 40 }}
+          onClick={() => {
+            // setContents(contentsArray)
+            // contentsArray.push(typing)
+            if (typing) {
+              setContents(
+                produce(contents, (draft) => {
+                  draft.push(typing)
+                })
+              )
+            }
+          }}
+        >
+          send
+        </Button>
+      </InputWrapper>
 
       {contents
         .slice(0)

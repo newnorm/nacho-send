@@ -35,7 +35,7 @@ const Chat = (props) => {
   const [yourId, setYourId] = React.useState('')
   const [messages, setMessages] = React.useState('')
   const [message, setMessage] = React.useState('')
-
+  const [typer, setTyper] = React.useState(yourId)
   const socketRef = useRef()
 
   React.useEffect(() => {
@@ -46,8 +46,11 @@ const Chat = (props) => {
     })
 
     socketRef.current.on('message', (message) => {
-      console.log(message)
       setMessages((oldMsgs) => [...oldMsgs, message])
+    })
+
+    socketRef.current.on('typer', (typer) => {
+      setTyper(`yourId`)
     })
   }, [])
 
@@ -63,6 +66,9 @@ const Chat = (props) => {
           value={message}
           onChange={(event) => {
             setMessage(event.target.value)
+            if (event.target.value) {
+              setTyper(`${yourId}`)
+            }
           }}
           onKeyDown={(event) => {
             if (event.key === 'Enter' && message) {
@@ -92,7 +98,7 @@ const Chat = (props) => {
           send
         </Button>
       </InputWrapper>
-
+      <div style={{ color: '#ffa33f', marginBottom: 20 }}>{typer !== yourId && `${typer} is typing...`}</div>
       {messages &&
         messages
           ?.slice(0)

@@ -19,6 +19,9 @@ io.on('connection', (socket) => {
   socket.on('send message', (body) => {
     io.emit('message', body)
   })
+  socket.on('is typing', (typer) => {
+    io.emit('typer', typer)
+  })
 })
 //접속 아이디를 알려주고, 메시지를 보낸다
 

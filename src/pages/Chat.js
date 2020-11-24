@@ -49,7 +49,7 @@ const Chat = (props) => {
       setMessages((oldMsgs) => [...oldMsgs, message])
     })
 
-    socketRef.current.on('typer', (typer) => {
+    socketRef.current.on('is typing', () => {
       setTyper(`yourId`)
     })
   }, [])
@@ -68,6 +68,7 @@ const Chat = (props) => {
             setMessage(event.target.value)
             if (event.target.value) {
               setTyper(`${yourId}`)
+              socketRef.current.emit('broadcast', yourId)
             }
           }}
           onKeyDown={(event) => {
@@ -98,7 +99,9 @@ const Chat = (props) => {
           send
         </Button>
       </InputWrapper>
-      <div style={{ color: '#ffa33f', marginBottom: 20 }}>{typer !== yourId && `${typer} is typing...`}</div>
+      <div style={{ color: '#ffa33f', marginBottom: 20 }}>
+        {typer !== yourId && `${typer} is typing...`}
+      </div>
       {messages &&
         messages
           ?.slice(0)

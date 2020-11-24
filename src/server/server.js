@@ -20,7 +20,8 @@ io.on('connection', (socket) => {
     io.emit('message', body)
   })
   socket.on('is typing', (typer) => {
-    io.emit('typer', typer)
+    // io.emit('typer', typer)
+    socket.broadcast("broadcast", typer + ' is typing...')
   })
 })
 //접속 아이디를 알려주고, 메시지를 보낸다

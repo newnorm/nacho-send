@@ -2,8 +2,7 @@ import React, { useRef } from 'react'
 //TODO: material ui inputs
 import styled from 'styled-components'
 import Button from '@material-ui/core/Button'
-import produce from 'immer'
-import { makeStyles, withStyles } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import io from 'socket.io-client'
 
@@ -35,9 +34,8 @@ const Chat = (props) => {
   const [yourId, setYourId] = React.useState('')
   const [messages, setMessages] = React.useState('')
   const [message, setMessage] = React.useState('')
-  const [typer, setTyper] = React.useState(yourId)
+  const [broadCastMessage, setBroadCastMessage] = React.useState('')
   const socketRef = useRef()
-
   React.useEffect(() => {
     socketRef.current = io.connect('/')
 
@@ -49,11 +47,21 @@ const Chat = (props) => {
       setMessages((oldMsgs) => [...oldMsgs, message])
     })
 
-    socketRef.current.on('typer', (typer) => {
-      setTyper(`yourId`)
+    socketRef.current.on('broadcast', (message) => {
+      setBroadCastMessage(message.id + ' is typing...')
     })
-  }, [])
 
+
+    socketRef.current.on('test', (message)=>{
+      setBroadCastMessage(message)
+    })
+
+    // broadcastRef.current = socket.connect('/')
+    //
+    // broadcastRef.current.on('broadcast', (message) => {
+    //   setBroadCastMessage(message.id + ' is typing...')
+    // })
+  }, [])
   return (
     <Layout>
       <h1 style={{ color: '#92cd28' }}>Nacho Chat</h1>
@@ -66,9 +74,12 @@ const Chat = (props) => {
           value={message}
           onChange={(event) => {
             setMessage(event.target.value)
-            if (event.target.value) {
-              setTyper(`${yourId}`)
-            }
+            setBroadCastMessage("someone is typing...")
+            // const messageObject = {
+            //   body: message,
+            //   id: yourId,
+            // }
+            // socketRef.current.emit('do broadcast', messageObject)
           }}
           onKeyDown={(event) => {
             if (event.key === 'Enter' && message) {
@@ -98,7 +109,9 @@ const Chat = (props) => {
           send
         </Button>
       </InputWrapper>
-      <div style={{ color: '#ffa33f', marginBottom: 20 }}>{typer !== yourId && `${typer} is typing...`}</div>
+      <div style={{ color: '#ffa33f', marginBottom: 20 }}>
+        {broadCastMessage || 'No one is typing now!'}
+      </div>
       {messages &&
         messages
           ?.slice(0)

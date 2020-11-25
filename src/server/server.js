@@ -16,12 +16,20 @@ const port = 8000
 
 io.on('connection', (socket) => {
   socket.emit('your id', socket.id)
+  socket.emit('test', 'this is a test')
   socket.on('send message', (body) => {
     io.emit('message', body)
   })
-  socket.on('is typing', (typer) => {
-    io.emit('typer', typer)
-  })
+
+  // socket.on('do broadcast', (body) => {
+  //   socket.broadcast.emit('broadcast', body)
+  // })
+
+  // socket.broadcast.emit('broadcast', 'world')
+
+  // socket.on('disconnect', function () {
+  //   io.emit('broadcast', socket.id + ' leaved')
+  // })
 })
 //접속 아이디를 알려주고, 메시지를 보낸다
 

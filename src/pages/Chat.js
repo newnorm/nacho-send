@@ -37,6 +37,7 @@ const Chat = (props) => {
   const [broadCastMessage, setBroadCastMessage] = React.useState('')
   const socketRef = useRef()
   React.useEffect(() => {
+    console.log('AAA');
     socketRef.current = io.connect('/')
 
     socketRef.current.on('your id', (id) => {
@@ -48,6 +49,7 @@ const Chat = (props) => {
     })
 
     socketRef.current.on('broadcast', (message) => {
+      console.log(message);
       setBroadCastMessage(message.id + ' is typing...')
     })
 
@@ -75,11 +77,11 @@ const Chat = (props) => {
           onChange={(event) => {
             setMessage(event.target.value)
             setBroadCastMessage("someone is typing...")
-            // const messageObject = {
-            //   body: message,
-            //   id: yourId,
-            // }
-            // socketRef.current.emit('do broadcast', messageObject)
+            const messageObject = {
+              body: message,
+              id: yourId,
+            }
+            socketRef.current.emit('do broadcast', messageObject)
           }}
           onKeyDown={(event) => {
             if (event.key === 'Enter' && message) {

@@ -15,15 +15,19 @@ const port = 8000
 // })
 
 io.on('connection', (socket) => {
+  console.log(socket.id);
+
   socket.emit('your id', socket.id)
   socket.emit('test', 'this is a test')
+
   socket.on('send message', (body) => {
     io.emit('message', body)
   })
 
-  // socket.on('do broadcast', (body) => {
-  //   socket.broadcast.emit('broadcast', body)
-  // })
+  socket.on('do broadcast', (body) => {
+    console.log(body);
+    socket.broadcast.emit('broadcast', body)
+  })
 
   // socket.broadcast.emit('broadcast', 'world')
 
